@@ -45,6 +45,7 @@ class SaleLine:
         """
         Location = Pool().get('stock.location')
         Date = Pool().get('ir.date')
+        Product = Pool().get('product.product')
 
         try:
             self.warehouse
@@ -70,13 +71,14 @@ class SaleLine:
                     stock_skip_warehouse=True,      # quantity of storage only
                     stock_date_end=date,            # Stock as of sale date
                     stock_assign=True):             # Exclude Assigned
+                product = Product(self.product.id)
                 if date <= Date.today():
-                    return self.product.quantity
+                    return product.quantity
                 else:
                     # For a sale in the future, it is more interesting to
                     # see the forecasted quantity rather than what is
                     # currently in the warehouse.
-                    return self.product.forecast_quantity
+                    return product.forecast_quantity
 
     def get_sale_state(self, name):
         """
