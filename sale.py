@@ -45,6 +45,7 @@ class SaleLine:
         """
         Location = Pool().get('stock.location')
         Date = Pool().get('ir.date')
+        Product = Pool().get('product.product')
 
         try:
             self.warehouse
@@ -65,18 +66,25 @@ class SaleLine:
         date = max(date, Date.today())
 
         if self.type == 'line' and self.product and self.warehouse:
-            with Transaction().set_context(
-                    locations=[self.warehouse.id],  # warehouse of the line
-                    stock_skip_warehouse=True,      # quantity of storage only
-                    stock_date_end=date,            # Stock as of sale date
-                    stock_assign=True):             # Exclude Assigned
-                if date <= Date.today():
-                    return self.product.quantity
-                else:
-                    # For a sale in the future, it is more interesting to
-                    # see the forecasted quantity rather than what is
-                    # currently in the warehouse.
-                    return self.product.forecast_quantity
+            context = {
+                'locations': [self.warehouse.id],  # warehouse of the line
+                'stock_skip_warehouse': True,      # quantity of storage only
+                'stock_date_end': date,            # Stock as of sale date
+                'stock_assign': True,              # Exclude Assigned
+            }
+            if date > Date.today():
+                # For a sale in the future, it is more interesting to
+                # see the forecasted quantity rather than what is
+                # currently in the warehouse.
+                context['forecast'] = True
+
+            with Transaction().set_context(**context):
+                quantity = Product.products_by_location(
+                    location_ids=[self.warehouse.id],
+                    product_ids=[self.product.id],
+                    with_childs=True
+                )
+                return quantity.values()[0]
 
     def get_sale_state(self, name):
         """
