@@ -8,6 +8,7 @@
 from trytond.pool import PoolMeta, Pool
 from trytond.transaction import Transaction
 from trytond.model import fields
+from trytond.pyson import Eval
 
 
 __metaclass__ = PoolMeta
@@ -20,7 +21,8 @@ class Move:
 
     available_qty = fields.Function(
         fields.Float(
-            'Available Quantity', digits=(16, 2)
+            'Available Quantity', digits=(16, Eval('unit_digits', 2)),
+            depends=['unit_digits']
         ), 'on_change_with_available_qty'
     )
 
