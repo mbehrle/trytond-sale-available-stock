@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 """
     tests/test_product.py
-    :copyright: (C) 2015 by Openlabs Technologies & Consulting (P) Limited
-    :license: BSD, see LICENSE for more details.
 """
 import unittest
 import datetime
