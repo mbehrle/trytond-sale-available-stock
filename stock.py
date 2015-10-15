@@ -36,6 +36,9 @@ class Move:
         if not (self.product and self.from_location):
             return
 
+        if self.from_location.type != 'storage':
+            return
+
         date = self.planned_date or Date.today()
         date = max(date, Date.today())
 
