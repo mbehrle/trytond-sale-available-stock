@@ -1,4 +1,4 @@
-# 
+#
 msgid ""
 msgstr "Content-Type: text/plain; charset=utf-8\n"
 
@@ -9,6 +9,10 @@ msgstr "Verfügbare Anzahl"
 msgctxt "field:sale.line,sale_state:"
 msgid "Sale State"
 msgstr "Status Verkauf"
+
+msgctxt "field:stock.move,available_qty:"
+msgid "Available Quantity"
+msgstr "Verfügbare Anzahl"
 
 msgctxt "model:ir.action,name:wizard_product_by_location_exclude_assigned"
 msgid "Product by Locations (Exclude Assigned)"
