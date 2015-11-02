@@ -48,7 +48,4 @@ class Move:
                 locations=[location.id], stock_date_end=date,
                 stock_assign=True):
 
-            if date <= Date.today():
-                return self.product.quantity
-            else:
-                return self.product.forecast_quantity
+            return self.product.quantity
